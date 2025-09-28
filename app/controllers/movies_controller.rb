@@ -8,9 +8,15 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    # Determine which ratings should be shown/checked right now.
+  
     @ratings_to_show = params[:ratings] ? params[:ratings].keys : @all_ratings
+  
+    allowed_sorts = %w[title release_date]
+    @sort_by = params[:sort_by]
+    @sort_by = nil unless allowed_sorts.include?(@sort_by)
+  
     @movies = Movie.with_ratings(@ratings_to_show)
+    @movies = @movies.sorted_by(@sort_by) if @sort_by.present?
   end
 
   def new

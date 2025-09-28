@@ -11,4 +11,10 @@ class Movie < ActiveRecord::Base
     return all if ratings_list.nil? || ratings_list.empty?
     where(rating: ratings_list)
   end
+
+  def self.sorted_by(sort_by)
+    allowed = %w[title release_date]
+    return all unless allowed.include?(sort_by.to_s)
+    order(sort_by.to_sym => :asc)
+  end
 end
