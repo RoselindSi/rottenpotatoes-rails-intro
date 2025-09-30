@@ -1,52 +1,31 @@
 <!--  This file is app/views/movies/index.html.erb -->
 <h2>All Movies</h2>
 
-<%= form_tag movies_path, method: :get, id: 'ratings_form', local: true do %>
-  <% @all_ratings.each do |rating| %>
-    <div class="form-check  form-check-inline">
-      <%= check_box_tag "ratings[#{rating}]", "1",
-            @ratings_to_show.include?(rating), class: 'form-check-input' %>
-      <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
-    </div>
-  <% end %>
-  <div>
-    <label class="form-label me-2" for="sort_by">Sort by:</label>
-    <%= select_tag :sort_by,
-                   options_for_select([["Title", "title"],
-                                       ["Release date", "release_date"]],
-                                       @sort_by),
-                   id:    "sort_by",
-                   class: "form-select d-inline w-auto" %>
-  </div>
-  <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
-<% end %>
-
-<table class="table table-striped col-md-12" id="movies">
-  <thead>
-    <tr>
-      <th>Movie Title</th>
-      <th>Rating</th>
-      <th>Release Date</th>
-      <th>More Info</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @movies.each do |movie| %>
-      <tr>
-        <td>
+<div id="movies">
+  <% @movies.each do |movie| %>
+    <div id="<%= dom_id movie %>">
+        <p>
+          <strong>Title:</strong>
           <%= movie.title %>
-        </td>
-        <td>
+        </p>
+
+        <p>
+          <strong>Rating:</strong>
           <%= movie.rating %>
-        </td>
-        <td>
+        </p>
+
+        <p>
+          <strong>Description:</strong>
+          <%= movie.description %>
+        </p>
+
+        <p>
+          <strong>Release date:</strong>
           <%= movie.release_date %>
-        </td>
-        <td>
-          <%= link_to "More about #{movie.title}", movie_path(movie) %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<%= link_to 'Add new movie', new_movie_path, :class => 'btn btn-primary' %>
+        </p>
+      </div>
+      <p><%= link_to "Show this movie", movie %></p>
+  <% end %>
+</div>
+
+<%= link_to 'Add new movie', new_movie_path, class: 'btn btn-primary' %>
